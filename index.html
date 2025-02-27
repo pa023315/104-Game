@@ -1,48 +1,39 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-TW">
 <head>
-  <meta charset="utf-8">
-  <title>職缺查詢</title>
+  <meta charset="UTF-8" />
+  <title>簡易 104 Style</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <h1>查詢職缺</h1>
-  <input id="companyName" placeholder="輸入公司名稱" />
-  <button id="searchBtn">查詢</button>
-  
-  <div id="result"></div>
-  
-  <script>
-    const searchBtn = document.getElementById('searchBtn');
-    searchBtn.addEventListener('click', async () => {
-      const company = document.getElementById('companyName').value.trim();
-      if (!company) {
-        alert("請輸入公司名稱");
-        return;
-      }
-      // 這裡要呼叫你的後端 API (範例 url)
-      try {
-        const response = await fetch(`https://YOUR-BACKEND-URL/api/jobs?company=${encodeURIComponent(company)}`);
-        const data = await response.json();
-        
-        // 顯示職缺
-        const resultDiv = document.getElementById('result');
-        if (data.jobs && data.jobs.length > 0) {
-          resultDiv.innerHTML = data.jobs.map(job => `
-            <div>
-              <h3>${job.title}</h3>
-              <p>公司：${job.company}</p>
-              <p>薪資：${job.salary}</p>
-              <p>地點：${job.location}</p>
-            </div>
-          `).join('');
-        } else {
-          resultDiv.innerHTML = "<p>目前無職缺</p>";
-        }
-      } catch (error) {
-        console.log(error);
-        alert("查詢失敗，請稍後再試");
-      }
-    });
-  </script>
+  <!-- 頂部區域（標題 + 搜尋輸入框 + 按鈕）-->
+  <header class="header">
+    <h1 class="logo">Mini Job Board</h1>
+    <div class="search-area">
+      <input type="text" id="searchInput" placeholder="輸入關鍵字(公司/職缺)..." />
+      <button id="searchBtn" class="search-btn">搜尋</button>
+    </div>
+  </header>
+
+  <!-- 職缺列表區域 -->
+  <main class="main-content">
+    <!-- 上方可做一些篩選、分類等UI（此處先簡化）-->
+    <section class="filter-section">
+      <span>搜尋結果 (共<span id="jobCount">0</span>筆)</span>
+      <!-- 可以再加下拉選單：地區、職類等 -->
+    </section>
+
+    <!-- 真正顯示職缺的地方 -->
+    <section id="jobList" class="job-list">
+      <!-- script.js 會動態插入職缺卡片 -->
+    </section>
+  </main>
+
+  <!-- 底部區域 -->
+  <footer class="footer">
+    <p>&copy; 2025 My Job Board</p>
+  </footer>
+
+  <script src="script.js"></script>
 </body>
 </html>

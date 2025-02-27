@@ -2,10 +2,47 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>我的第一個 GitHub Pages 網頁</title>
+  <title>職缺查詢</title>
 </head>
 <body>
-  <h1>Hello GitHub Pages！</h1>
-  <p>這是我在 GitHub 上直接建立的網頁檔案。</p>
+  <h1>查詢職缺</h1>
+  <input id="companyName" placeholder="輸入公司名稱" />
+  <button id="searchBtn">查詢</button>
+  
+  <div id="result"></div>
+  
+  <script>
+    const searchBtn = document.getElementById('searchBtn');
+    searchBtn.addEventListener('click', async () => {
+      const company = document.getElementById('companyName').value.trim();
+      if (!company) {
+        alert("請輸入公司名稱");
+        return;
+      }
+      // 這裡要呼叫你的後端 API (範例 url)
+      try {
+        const response = await fetch(`https://YOUR-BACKEND-URL/api/jobs?company=${encodeURIComponent(company)}`);
+        const data = await response.json();
+        
+        // 顯示職缺
+        const resultDiv = document.getElementById('result');
+        if (data.jobs && data.jobs.length > 0) {
+          resultDiv.innerHTML = data.jobs.map(job => `
+            <div>
+              <h3>${job.title}</h3>
+              <p>公司：${job.company}</p>
+              <p>薪資：${job.salary}</p>
+              <p>地點：${job.location}</p>
+            </div>
+          `).join('');
+        } else {
+          resultDiv.innerHTML = "<p>目前無職缺</p>";
+        }
+      } catch (error) {
+        console.log(error);
+        alert("查詢失敗，請稍後再試");
+      }
+    });
+  </script>
 </body>
 </html>
